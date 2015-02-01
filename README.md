@@ -36,8 +36,8 @@ The movie consists of:
 * a title image (displayed for 96 frames)
 * a video clip (clip1.mp4) trimmed by 5 and 10 frames
 * another video clip (clip2.mp4) untrimmed.
-* a fin image (displayed for 24 frames)
-* a black image (displayed for 24 frames)
+* a fin image (displayed for 48 frames)
+* a black image (displayed for 48 frames)
 
 ### Commands
 #### res
@@ -60,7 +60,7 @@ Parameters:
 Adds an image
 Parameters:
 * image path (required). Must be relative to .am file
-* display time (optional). Length of time in frames that image is shown. Defaults to 24 frames.
+* display time (optional). Length of time in frames that image is shown. Defaults to 48 frames.
 
 ### vid
 Adds an video clip

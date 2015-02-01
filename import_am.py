@@ -10,7 +10,7 @@ current_frame = 1
 scene = None
 base_path = ""
 cross_time = 24
-def_image_length = 96
+def_image_length = 48
 
 def init_nle(filepath):
     global scene, current_channel, current_frame,base_path
@@ -52,9 +52,9 @@ def do_set_frame_rate(params):
     scene.render.fps_base = 1
 
 def do_set_cross_time(params):
-    global def_image_length
-    def_image_length = int(params[0])    
-    print("Setting default image length to %d" % (def_image_length))
+    global cross_time
+    cross_time = int(params[0])    
+    print("Setting default crossfade time to %d" % (cross_time))
 
 def do_insert_image(params):
     image_path = os.path.join(base_path,str(params[0]))
