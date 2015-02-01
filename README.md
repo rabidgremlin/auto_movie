@@ -25,7 +25,55 @@ frt	24
 ctm	24
 img	title.png	96
 vid	clip1.mp4	5	10
-vid	clip2.mp4	0	0
+vid	clip2.mp4
 img	fin.png
 img	black.png
 ```
+
+This file sets up the output to be 1920x1080px with a framerate of 24fps, with a 24 frame cross-fade between each sequence. 
+
+The movie consists of:
+* a title image (displayed for 96 frames)
+* a video clip (clip1.mp4) trimmed by 5 and 10 frames
+* another video clip (clip2.mp4) untrimmed.
+* a fin image (displayed for 24 frames)
+* a black image (displayed for 24 frames)
+
+### Commands
+#### res
+Sets the project resolution.
+Parameters:
+* width (required)
+* height (required)
+
+### frt
+Sets the project framerate.
+Parameters:
+* framerate (required)
+
+### ctm
+Sets the cross fade time
+Parameters:
+* time in frames (required)
+
+### img
+Adds an image
+Parameters:
+* image path (required). Must be relative to .am file
+* display time (optional). Length of time in frames that image is shown. Defaults to 24 frames.
+
+### vid
+Adds an video clip
+Parameters:
+* clip path (required). Must be relative to .am file
+* start trim (optional). Number of frames to trim from the start of the clip. Defaults to 0 frames.
+* end trim (optional). Number of frames to trim from the end of the clip. Defaults to 0 frames. 
+
+## Notes/Issues
+* Code is ugly, lots of globals etc
+* Cross fade is not yet added by the script
+ 
+
+ 
+
+
