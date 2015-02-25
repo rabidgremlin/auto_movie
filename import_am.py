@@ -9,8 +9,9 @@ current_channel = 1
 current_frame = 1
 scene = None
 base_path = ""
-cross_time = 24
+cross_time = 12
 def_image_length = 48
+clip_list = []
 
 def init_nle(filepath):
     global scene, current_channel, current_frame,base_path
@@ -32,7 +33,7 @@ def toggle_channel():
 
 def increment_current_frame(sequence):
     global current_frame
-    current_frame += sequence.frame_final_duration
+    current_frame += sequence.frame_final_duration - cross_time
 
 def do_set_resolution(params):
     x_res = int(params[0])
@@ -73,6 +74,8 @@ def do_insert_image(params):
     
     image_seq.frame_final_duration = image_length
     
+    
+    clip_list.append(image_seq)
     toggle_channel()
     increment_current_frame(image_seq) 
                 
@@ -89,7 +92,7 @@ def do_insert_video(params):
         offset_end = int(params[2])    
     
     print("Insert video here" + str(clip_path))
-    
+        
     vid_seq = scene.sequence_editor.sequences.new_movie(
         name=clip_path,
         filepath=clip_path,
@@ -98,6 +101,7 @@ def do_insert_video(params):
     vid_seq.animation_offset_start=offset_start
     vid_seq.animation_offset_end=offset_end
     
+    clip_list.append(vid_seq)
     toggle_channel()
     increment_current_frame(vid_seq)    
 
@@ -126,6 +130,29 @@ def do_cmd(command):
                     else:
                         print("Error! Unknown command")
     
+def add_cross_fades():
+    
+    prev_clip = None
+    
+    for sequence in clip_list:
+        print (sequence.name)
+        if prev_clip:
+            print("cross fading %s to %s" % (prev_clip.name,sequence.name))
+            
+            start =  sequence.frame_start
+            end = start + cross_time
+            
+            #print("\t start: %d  end: %d" %(start,end)) 
+            
+            cross = scene.sequence_editor.sequences.new_effect(
+                    name="cross",
+                    type='CROSS',		
+                    channel=3,frame_start=start,frame_end=end,seq1=prev_clip,seq2=sequence)       
+            
+            cross.update()        
+                    
+        prev_clip = sequence   
+                
 
 def read(filepath):
     init_nle(filepath)    
@@ -135,6 +162,8 @@ def read(filepath):
     filehandle = open(filepath, "r")
     for line in filehandle.readlines():
         do_cmd(line.strip().split("\t"))
+        
+    add_cross_fades()    
         
     scene.frame_end = current_frame
     bpy.context.window.screen = bpy.data.screens["Video Editing"]    
