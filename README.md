@@ -71,7 +71,7 @@ Parameters:
 
 ## Notes/Issues
 * Code is ugly, lots of globals etc
-* Audio on video clips is not currently imported
+
  
 
  

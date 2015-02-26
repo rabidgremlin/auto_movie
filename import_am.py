@@ -27,8 +27,8 @@ def init_nle(filepath):
 
 def toggle_channel():
     global current_channel
-    current_channel +=1
-    if current_channel > 2:
+    current_channel +=2
+    if current_channel > 3:
         current_channel = 1
 
 def increment_current_frame(sequence):
@@ -96,10 +96,29 @@ def do_insert_video(params):
     vid_seq = scene.sequence_editor.sequences.new_movie(
         name=clip_path,
         filepath=clip_path,
-        channel=current_channel, frame_start=current_frame)	
+        channel=current_channel, frame_start=current_frame)
+    
+    #original_type = bpy.context.area.type
+    #bpy.context.area.type = "SEQUENCE_EDITOR"
+    #scene.frame_current = current_frame
+    #bpy.ops.sequencer.movie_strip_add(filepath=clip_path,relative_path=False, channel=current_channel, frame_start=current_frame)	
+    #bpy.context.area.type = original_type                
+    #vid_seq = scene.sequence_editor.active_strip   
+    #print ("vid seq is:" + str(vid_seq))        
 		
     vid_seq.animation_offset_start=offset_start
     vid_seq.animation_offset_end=offset_end
+    vid_seq.update()
+    
+    try:
+        snd_seq = scene.sequence_editor.sequences.new_sound(
+            name=clip_path,
+            filepath=clip_path,
+            channel=current_channel, frame_start=current_frame)
+        snd_seq.animation_offset_start=offset_start
+        snd_seq.animation_offset_end=offset_end    
+    except:
+        pass    
     
     clip_list.append(vid_seq)
     toggle_channel()
@@ -147,7 +166,7 @@ def add_cross_fades():
             cross = scene.sequence_editor.sequences.new_effect(
                     name="cross",
                     type='CROSS',		
-                    channel=3,frame_start=start,frame_end=end,seq1=prev_clip,seq2=sequence)       
+                    channel=5,frame_start=start,frame_end=end,seq1=prev_clip,seq2=sequence)       
             
             cross.update()        
                     
@@ -157,6 +176,7 @@ def add_cross_fades():
 def read(filepath):
     init_nle(filepath)    
     
+        
     print("loading file " + filepath)     
     
     filehandle = open(filepath, "r")
